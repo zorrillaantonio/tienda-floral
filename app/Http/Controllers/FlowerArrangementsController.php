@@ -9,7 +9,11 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
-use App\Models\Category;
+use App\Models\{
+    Category,
+    FlowerArrangements
+};
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FlowerArrangementsController extends AppBaseController
 {
@@ -30,7 +34,7 @@ class FlowerArrangementsController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $flowerArrangements = $this->flowerArrangementsRepository->paginate(10);
+        $flowerArrangements = $this->flowerArrangementsRepository->orderBy('created_at','desc')->paginate(10);
 
         return view('flower_arrangements.index')
             ->with('flowerArrangements', $flowerArrangements);
@@ -115,13 +119,7 @@ class FlowerArrangementsController extends AppBaseController
 
         $categories = Category::orderBy('created_at','desc')->pluck('title','id');
 
-        $imgs = [];
-
-        foreach($flowerArrangements->getMedia() as $media) {
-            $imgs[] = asset($media->getFullUrl());
-        }
-
-        return view('flower_arrangements.edit',['categories' => $categories, 'imgs' => $imgs])->with('flowerArrangements', $flowerArrangements);
+        return view('flower_arrangements.edit',['categories' => $categories, 'edit' => true])->with('flowerArrangements', $flowerArrangements);
     }
 
     /**
@@ -184,5 +182,39 @@ class FlowerArrangementsController extends AppBaseController
         Flash::success('Arreglos Florales deleted successfully.');
 
         return redirect(route('flower-arrangements.index'));
+    }
+
+
+    public function chageActive(Request $request)
+    {
+        $flowerArrangement = $this->flowerArrangementsRepository->find($request->id);
+
+        if (empty($flowerArrangement)) {
+            return response()->json(['message' => 'Arreglos Florales not found', 'status' => false],404);
+        }
+
+        $flowerArrangement->is_active = $request->value ? 0 : 1;
+        $flowerArrangement->save();
+
+        return response()->json(['value' => $flowerArrangement->is_active, 'status' => true],200);
+    }
+
+    public function deleteFile(Request $request)
+    {
+        $flowerArrangement = $this->flowerArrangementsRepository->find($request->arrangement_id);
+
+        if (empty($flowerArrangement)) {
+            return response()->json(['message' => 'Arreglos Florales not found', 'status' => false],404);
+        }
+
+        $media = Media::find($request->media_id);
+
+        if (empty($media)) {
+           return response()->json(['message' => 'Media not found', 'status' => false],404);
+
+        }
+
+        $media->delete();
+        return response()->json(['message' => 'Media delete', 'status' => true],200);
     }
 }

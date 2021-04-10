@@ -19,7 +19,7 @@
 <!-- Updated At Field -->
 <div class="col-sm-12">
     {!! Form::label('description', 'Descripción:') !!}
-    <p>{{ $category->description }}</p>
+    <p>{!! $category->description !!}</p>
 </div>
 
 <!-- Bol Activo Field -->
@@ -27,9 +27,9 @@
     {!! Form::label('is_active', 'Activo:') !!}
     <p>
     @if ($category->is_active == true)
-      <span class="label label-success">Activo</span>
+      <span class="badge badge-primary">Activo</span>
     @else
-      <span class="label label-danger">Desactivo</span>
+      <span class="badge badge-secondary">Desactivo</span>
     @endif
     </p>
 </div>

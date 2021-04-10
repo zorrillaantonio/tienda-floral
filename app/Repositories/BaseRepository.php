@@ -190,4 +190,21 @@ abstract class BaseRepository
 
         return $model->delete();
     }
+
+    /**
+     * Order By records for scaffold.
+     *
+     * @param string $column
+     * @param string $order
+     *
+     * @throws \Exception
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function orderBy($column = 'id', $order = 'asc')
+    {
+        $query = $this->allQuery();
+
+        return $query->orderBy($column, $order);
+    }
 }

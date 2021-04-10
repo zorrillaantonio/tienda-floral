@@ -29,7 +29,7 @@ class CategoryController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $categories = $this->categoryRepository->paginate(10);
+        $categories = $this->categoryRepository->orderBy('created_at','desc')->paginate(10);
 
         return view('categories.index')
             ->with('categories', $categories);
@@ -152,5 +152,19 @@ class CategoryController extends AppBaseController
         Flash::success('Category deleted successfully.');
 
         return redirect(route('categories.index'));
+    }
+
+    public function chageActive(Request $request)
+    {
+        $category = $this->categoryRepository->find($request->id);
+
+        if (empty($category)) {
+            return response()->json(['message' => 'Category not found', 'status' => false],404);
+        }
+
+        $category->is_active = $request->value ? 0 : 1;
+        $category->save();
+
+        return response()->json(['value' => $category->is_active, 'status' => true],200);
     }
 }

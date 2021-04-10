@@ -20,6 +20,7 @@ class CreateFlowerArrangementsTable extends Migration
             $table->text('description');
             $table->string('slug');
             $table->decimal('price', 14, 2);
+            $table->boolean('is_active')->default(0);
 
             $table->foreignId('category_id')
                 ->constrained('categories')

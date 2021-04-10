@@ -25,7 +25,11 @@ Route::get('/home', [
     HomeController::class, 'index'
 ])->name('home');
 
+Route::prefix('admin')->middleware(['auth'])->group(function(){
+	Route::resource('categories', App\Http\Controllers\CategoryController::class);
+	Route::post('categories/chage-active',[ App\Http\Controllers\CategoryController::class, 'chageActive' ])->name('categories.change-active');
+	Route::resource('flower-arrangements', App\Http\Controllers\FlowerArrangementsController::class);
+	Route::post('flower-arrangements/chage-active',[ App\Http\Controllers\FlowerArrangementsController::class, 'chageActive' ])->name('flower-arrangements.change-active');
+	Route::post('flower-arrangements/delete-file',[ App\Http\Controllers\FlowerArrangementsController::class, 'deleteFile' ])->name('flower-arrangements.delete-file');
+});
 
-Route::resource('categories', App\Http\Controllers\CategoryController::class);
-
-Route::resource('flower-arrangements', App\Http\Controllers\FlowerArrangementsController::class);

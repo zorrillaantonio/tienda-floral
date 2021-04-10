@@ -37,10 +37,8 @@
     </div>
 @endsection
 
-
 @push('page_scripts')
-   <script src="https://unpkg.com/file-upload-with-preview@4.1.0/dist/file-upload-with-preview.min.js"></script>
-
+    <script src="https://unpkg.com/file-upload-with-preview@4.1.0/dist/file-upload-with-preview.min.js"></script>
     <script>
         var upload = new FileUploadWithPreview("mySecondImage");
     </script>
@@ -53,4 +51,15 @@
         type="text/css"
         href="https://unpkg.com/file-upload-with-preview@4.1.0/dist/file-upload-with-preview.min.css"
     />
+
+    <style type="text/css">
+        .row2{
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -7.5px;
+            margin-left: -7.5px;
+        }
+    </style>
 @endpush

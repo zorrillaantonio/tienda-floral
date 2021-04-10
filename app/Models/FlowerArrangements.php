@@ -38,7 +38,8 @@ class FlowerArrangements extends Model implements HasMedia
         'description',
         'slug',
         'price',
-        'category_id'
+        'category_id',
+        'is_active'
     ];
 
     /**

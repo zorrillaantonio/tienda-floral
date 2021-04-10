@@ -20,7 +20,8 @@ class FlowerArrangementsRepository extends BaseRepository
         'title',
         'description',
         'slug',
-        'price'
+        'price',
+        'is_active'
     ];
 
     /**
